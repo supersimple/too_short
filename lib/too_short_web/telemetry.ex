@@ -1,4 +1,7 @@
 defmodule TooShortWeb.Telemetry do
+  @moduledoc """
+  Default telemetry implementation (added by phx generator.)
+  """
   use Supervisor
   import Telemetry.Metrics
 

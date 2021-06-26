@@ -1,0 +1,55 @@
+Too $Short URL Notes
+
+To run the project: `docker-compose up --build`
+To test: `mix test`
+
+## Determinism
+The short code are non-deterministic. There are valid reasons to be deterministic and non-deterministic.
+My decision was based on wanting to use a custom character set (vs. Base16/Base32, etc.)
+
+## Caching
+
+I did not take the time to add a caching layer. Partly because of time, and partly because it makes
+sense to see how an application is being used (and how much) before adding a cache.
+
+For instance, if the dominant use case was to create a link and share that exactly once, caching is not
+a net improvement.
+
+If you assume a link will be created once and used many times, in this implementation I would choose
+Erlang Persitent Term (over ETS, or Agents) because it is highly optimized for reads over writes and updates.
+> This module is similar to ets in that it provides a storage for Erlang terms that can be accessed in constant time,
+but with the difference that persistent_term has been highly optimized for reading terms at the expense of writing and 
+updating terms. When a persistent term is updated or deleted, a global garbage collection pass is run to scan all 
+processes for the deleted term, and to copy it into each process that still uses it.
+Therefore, persistent_term is suitable for storing Erlang terms that are frequently accessed but never or infrequently updated.
+
+It is expected a short url will be written once and read many times. If there were requirements like counting the number of 
+times a short code was used, I think moving to ETS (possibly via Cachex) would be more ideal.
+
+## Choice of characters
+The character set used was built with:
+```
+    Enum.map(?A..?Z, &<<&1>>) |> Kernel.++(Enum.map(?a..?z, &<<&1>>)) |> Kernel.++(Enum.map(?0..?9, &<<&1>>)) |> Kernel.--(~w[B 8 G 6 I 1 l O 0 S 5 Z 2])
+```
+
+I decided to generate them in Iex and then assign them to a module attribute because they are essentially constants.
+
+Since one major part of the UI of this app is the short code that is generated, I wanted to select the usable characters carefully.
+
+The trade-offs are: the larger the character set, the less change of collision, which allows for shorter short codes.
+For example, if you wanted to only use numbers, the chance of collision is pretty high. a 1 character short code has a 
+10% chance of collision, 2 characters is 1%, etc. Expanding the list of possible characters decreases the chance of 
+collision linearly. However, ergonomics can decrease when using special characters, or characters that are hard to access 
+on the keyboard or unfamiliar to the user. This character set is alphanumberic, while removing 
+ambiguous characters (eg. '1' looks a lot like 'l'.)
+
+## Choice of persistent storage
+I opted to use PostgreSQL for persistence because of it's flexibility and ubiquity. There are many specialized datastores
+to choose from nowadays, but I find psql to offer a lot of options. Something that is worthwhile especially when a product
+might require changes/pivots in the near future.
+
+## Front-End
+There is only 1 real view in this app (2 if you count the error page), but I decided to pull in Tailwindcss because it is
+becoming common and I generally enjoy using it.
+I also opted to use LiveView for the interface because I like the ergonomics of it, it offers a better experience than a
+static page, and it is becoming popular in the Elixir community.
