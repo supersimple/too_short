@@ -23,6 +23,7 @@ defmodule TooShortWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import TooShortWeb.ConnCase
+      import TooShort.Factory
 
       alias TooShortWeb.Router.Helpers, as: Routes
 

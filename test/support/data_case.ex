@@ -24,6 +24,7 @@ defmodule TooShort.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import TooShort.DataCase
+      import TooShort.Factory
     end
   end
 
