@@ -1,0 +1,18 @@
+<section class="mx-auto w-1/2 bg-gray-100 rounded-lg p-8 mt-24 shadow-lg">
+  <p class="alert alert-info" role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+
+  <p class="alert alert-danger" role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+
+  <form phx-change="validate_url" phx-submit="shorten_url" class="grid grid-cols-4 rounded-lg border-2 p-1 <%= validation_class(@url_valid?) %>">
+    <input class="p-4 col-span-4 lg:col-span-3 border-0 focus:ring-0" type="text" name="url" value="<%= @url %>" placeholder="URL" autocomplete="off"/>
+    <button class="rounded-md col-span-4 lg:col-span-1 bg-green-700 hover:bg-green-900 p-4 text-white font-black" type="submit">Shorten</button>
+  </form>
+  <p class="pt-6">
+    <span class="font-black tracking-wide p-2 rounded bg-gray-200">Too $hort URL:</span>
+    <a class="underline" href="<%= @short_url %>" target="_blank"><%= @short_url %></a>
+  </p>
+</section>
