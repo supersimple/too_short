@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  phoenix:
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/too_short
+      DATABASE_USER: postgres
+      DATABASE_PASS: postgres
+      DATABASE_NAME: too_short
+      DATABASE_PORT: 5433
+      DATABASE_HOST: db
+    ports:
+      - '4000:4000'
+    restart: always
+    depends_on:
+      - db
+  db:
+    image: postgres:10.12-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: too_short
+    ports:
+      - '5433:5432'
+    restart: always
