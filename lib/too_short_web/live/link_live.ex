@@ -9,15 +9,16 @@ defmodule TooShortWeb.LinkLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, url: "", url_valid?: nil, short_url: "")}
+    {:ok, assign(socket, url: "", url_valid?: nil, short_url: "", recent: Links.get_recent())}
   end
 
   @impl true
   def handle_event("shorten_url", %{"url" => url}, socket) do
     case shorten(url) do
-      {:ok, %Link{short_code: short_code}} ->
+      {:ok, %Link{short_code: short_code} = new_link} ->
         short_url = Routes.link_url(TooShortWeb.Endpoint, :show, short_code)
-        {:noreply, assign(socket, %{short_url: short_url, url: "", url_valid?: nil})}
+        recent = [new_link] ++ socket.assigns.recent
+        {:noreply, assign(socket, %{short_url: short_url, url: "", url_valid?: nil, recent: recent})}
 
       _ ->
         {:noreply, put_flash(socket, :error, "There was an error creating your short link")}

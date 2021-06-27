@@ -44,7 +44,7 @@ jobs:
         run: mix compile --warnings-as-errors
       - name: Check formatting
         run: mix format --check-formatted
-      - name: Check cREDO
+      - name: Check Credo
         run: mix credo
       - name: Run tests
         run: mix test

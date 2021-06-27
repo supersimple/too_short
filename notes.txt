@@ -53,3 +53,12 @@ There is only 1 real view in this app (2 if you count the error page), but I dec
 becoming common and I generally enjoy using it.
 I also opted to use LiveView for the interface because I like the ergonomics of it, it offers a better experience than a
 static page, and it is becoming popular in the Elixir community.
+
+## CI
+I decided to use Github actions for CI. The workflow validates that the project compiles without errors, that it is formatted properly,
+that credo passes, and that all test pass.
+I am accustommed to using CircleCI in production environments, but TBH I like Github actions better now.
+
+## Dialyzer?
+No. Dialyzer is good for catching a certain type of error, but I skipped it on this project. I don't have strong
+opinions on Dialyzer other than to say I think the amount of juice from the squeeze is low on a project this small.

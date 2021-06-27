@@ -18,6 +18,7 @@ defmodule TooShort.Link do
   schema "links" do
     field :short_code, :string
     field :url, :string
+    timestamps(type: :utc_datetime_usec, updated_at: false)
   end
 
   @doc false

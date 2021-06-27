@@ -16,6 +16,18 @@ defmodule TooSHort.LinksTest do
     end
   end
 
+  describe "get_recent/1" do
+    test "returns recent items in order" do
+      [link1, link2, link3] = insert_list(3, :link)
+      assert Links.get_recent() == [link3, link2, link1]
+    end
+
+    test "adheres to limit given" do
+      [_link1, link2, link3] = insert_list(3, :link)
+      assert Links.get_recent(2) == [link3, link2]
+    end
+  end
+
   describe "create/1" do
     test "when given required attributes" do
       link_attrs = params_for(:link)
