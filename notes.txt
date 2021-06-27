@@ -65,3 +65,4 @@ opinions on Dialyzer other than to say I think the amount of juice from the sque
 
 ## Improvements
 - Add pubsub for new links to update the "recent short links" across all visitors.
+- Move recent links into a separate component
