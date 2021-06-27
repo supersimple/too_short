@@ -17,7 +17,7 @@ defmodule TooShortWeb.LinkLive do
     case shorten(url) do
       {:ok, %Link{short_code: short_code} = new_link} ->
         short_url = Routes.link_url(TooShortWeb.Endpoint, :show, short_code)
-        recent = [new_link] ++ socket.assigns.recent
+        recent = build_recent_list(new_link, socket.assigns.recent)
         {:noreply, assign(socket, %{short_url: short_url, url: "", url_valid?: nil, recent: recent})}
 
       _ ->
@@ -34,6 +34,11 @@ defmodule TooShortWeb.LinkLive do
     end
   end
 
+  defp build_recent_list(head, list) do
+    [head]
+    |> Kernel.++(list)
+    |> Enum.take(10)
+  end
   defp validation_class(true), do: "border-green-700"
   defp validation_class(false), do: "border-red-700"
   defp validation_class(_), do: "border-gray-700"
