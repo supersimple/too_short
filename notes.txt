@@ -1,6 +1,7 @@
 Too $Short URL Notes
 
-To run the project: `docker-compose up --build`
+To start the project: `docker-compose up --build`
+To access the project: `localhost:4000/`
 To test: `mix test`
 
 ## Determinism
@@ -53,6 +54,23 @@ There is only 1 real view in this app (2 if you count the error page), but I dec
 becoming common and I generally enjoy using it.
 I also opted to use LiveView for the interface because I like the ergonomics of it, it offers a better experience than a
 static page, and it is becoming popular in the Elixir community.
+
+## Validation
+A URL is considered valid if it has a scheme that is "http" or "https", and if the host contains one or more non-whitespace characters
+followed by a dot and then 2 or more non-whitespace characters. 
+Some considerations:
+1. While you would expect most URLs to only contain alpha (or alphanumberic) characters, there are valid TLDs like "中國" that
+would not comply.
+2. In theory, one should be able to match against any of the known 1500+ TLDs to truly validate
+3. It might also make sense to ping the given URL to make sure the endpoint exists
+The point is there are many ways to validate a URL. My validation scheme is akin to asking, "does this look like a real URL?"
+The tradeoff of using a simpler validation method is that you could allow a bad url to be shortened. On the other hand,
+truly validating a URL (at the time of the request) would be more accurate but slower.
+
+My assumption is that a user is copying and pasting a long url from a browser window. The simple validation will catch an error (like
+not selecting the entire domain.) In generaly though, the application is optimistic that the user will not try to fool the validation
+into allowing an invalid URL. Additionally, the consequences of shortening an invalid URL seem very low. The UX and performamce are preferred
+over catching the edge/corner cases.
 
 ## CI
 I decided to use Github actions for CI. The workflow validates that the project compiles without errors, that it is formatted properly,

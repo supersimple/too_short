@@ -56,7 +56,7 @@ defmodule TooShort.Link do
     not is_nil(parsed.scheme) and
       not is_nil(parsed.host) and
       parsed.scheme in ["http", "https"] and
-      String.match?(parsed.host, ~r/.+\..{2,}$/)
+      String.match?(parsed.host, ~r/^\S+\.\S{2,}$/)
   end
 
   def url_valid?(_url), do: false
