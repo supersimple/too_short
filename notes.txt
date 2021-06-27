@@ -39,7 +39,7 @@ Since one major part of the UI of this app is the short code that is generated, 
 The trade-offs are: the larger the character set, the less change of collision, which allows for shorter short codes.
 For example, if you wanted to only use numbers, the chance of collision is pretty high. a 1 character short code has a 
 10% chance of collision, 2 characters is 1%, etc. Expanding the list of possible characters decreases the chance of 
-collision linearly. However, ergonomics can decrease when using special characters, or characters that are hard to access 
+collision exponentially. However, ergonomics can decrease when using special characters, or characters that are hard to access 
 on the keyboard or unfamiliar to the user. This character set is alphanumberic, while removing 
 ambiguous characters (eg. '1' looks a lot like 'l'.)
 
